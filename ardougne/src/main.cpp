@@ -22,8 +22,8 @@ bool step = false;
 int xValue = 0; // To store value of the X axis
 int yValue = 0; // To store value of the Y axis
 
-int xPos = 0;
-int yPos = 0;
+float xPos = 0;
+float yPos = 0;
 bool xSign = true;
 bool ySign = false;
 
@@ -219,10 +219,10 @@ void loop()
   }
   step = false;
   Serial.print("(");
-  Serial.print(xPos);
-  Serial.print(", ");
-  Serial.print(yPos);
-  Serial.println(")");
+  Serial.print(xPos, 2);
+  Serial.print(" 	μm, ");
+  Serial.print(yPos, 2);
+  Serial.println(" 	μm)");
 
   //  Serial.println("Y Stepped"+ ySteps);
 }
