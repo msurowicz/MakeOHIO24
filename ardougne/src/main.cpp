@@ -11,7 +11,7 @@
 #define swPin 4
 #define fineSwitch 3
 // each step is 5 micrometers
-#define STEP_DISTANCE 5
+#define STEP_DISTANCE 2.5
 int j = 0;
 bool singleStep = true;
 bool step = false;
