@@ -3,12 +3,11 @@
 #define VRX_PIN A0 // Arduino pin connected to VRX pin
 #define VRY_PIN A1 // Arduino pin connected to VRY pin
 
-// #define swPin A2
-#define xStepPin 2
-#define xDirPin 5
+#define yStepPin 2
+#define yDirPin 5
 #define statusLight 6
-#define yStepPin 7
-#define yDirPin 9
+#define xStepPin 7
+#define xDirPin 9
 #define swPin 4
 #define fineSwitch 3
 int j = 0;
@@ -83,46 +82,46 @@ void loop()
 
   if (!singleStep)
   {
-    int motorSpeedDelay = 500;
+    int motorSpeedDelay = 1200;
     float xSpeed = motorSpeedDelay + motorSpeedDelay * (1 - xPercent);
     float ySpeed = motorSpeedDelay + motorSpeedDelay * (1 - yPercent);
 
     if (deltaX >= 0)
     {
-      digitalWrite(xDirPin, clockwise);
+      digitalWrite(xDirPin, counterClockwise);
     }
     else
     {
-      digitalWrite(xDirPin, counterClockwise);
+      digitalWrite(xDirPin, clockwise);
     }
     if (deltaY >= 0)
     {
-      digitalWrite(yDirPin, clockwise);
+      digitalWrite(yDirPin, counterClockwise);
     }
     else
     {
-      digitalWrite(yDirPin, counterClockwise);
+      digitalWrite(yDirPin, clockwise);
     }
 
-    if (deltaX < -20 || deltaX > 20)
+    if (deltaX < -60 || deltaX > 60)
     {
 
       digitalWrite(xStepPin, HIGH); // sets the digital pin 13 on
-      delayMicroseconds(xSpeed);
+      delayMicroseconds(motorSpeedDelay);
       digitalWrite(xStepPin, LOW); // sets the digital pin 13 on
-      delayMicroseconds(xSpeed);
+      delayMicroseconds(motorSpeedDelay);
       // Serial.println(xSpeed);
     }
 
     // Serial.println("X Stepped" + xSteps);
-    if (deltaY < -20 || deltaY > 20)
+    if (deltaY < -60 || deltaY > 60)
     {
 
-      digitalWrite(yStepPin, HIGH); // sets the digital pin 13 off
-      delayMicroseconds(ySpeed);    // waits for a milisecond
-      digitalWrite(yStepPin, LOW);  // sets the digital pin 13 off
-      delayMicroseconds(ySpeed);    // waits for a milisecond
-                                    // Serial.println(ySpeed);
+      digitalWrite(yStepPin, HIGH);       // sets the digital pin 13 off
+      delayMicroseconds(motorSpeedDelay); // waits for a milisecond
+      digitalWrite(yStepPin, LOW);        // sets the digital pin 13 off
+      delayMicroseconds(motorSpeedDelay); // waits for a milisecond
+                                          // Serial.println(ySpeed);
     }
   }
   else
