@@ -10,6 +10,8 @@
 #define xDirPin 9
 #define swPin 4
 #define fineSwitch 3
+// each step is 5 micrometers
+#define STEP_DISTANCE 5
 int j = 0;
 bool singleStep = true;
 bool step = false;
@@ -19,6 +21,11 @@ bool step = false;
 
 int xValue = 0; // To store value of the X axis
 int yValue = 0; // To store value of the Y axis
+
+int xPos = 0;
+int yPos = 0;
+bool xSign = true;
+bool ySign = false;
 
 void setup()
 {
@@ -88,24 +95,35 @@ void loop()
 
     if (deltaX >= 0)
     {
+      xSign = false;
       digitalWrite(xDirPin, counterClockwise);
     }
     else
     {
+      xSign = true;
       digitalWrite(xDirPin, clockwise);
     }
     if (deltaY >= 0)
     {
+      ySign = false;
       digitalWrite(yDirPin, counterClockwise);
     }
     else
     {
+      ySign = true;
       digitalWrite(yDirPin, clockwise);
     }
 
     if (deltaX < -60 || deltaX > 60)
     {
-
+      if (xSign)
+      {
+        xPos += STEP_DISTANCE;
+      }
+      else
+      {
+        xPos -= STEP_DISTANCE;
+      }
       digitalWrite(xStepPin, HIGH); // sets the digital pin 13 on
       delayMicroseconds(motorSpeedDelay);
       digitalWrite(xStepPin, LOW); // sets the digital pin 13 on
@@ -117,6 +135,14 @@ void loop()
     if (deltaY < -60 || deltaY > 60)
     {
 
+      if (ySign)
+      {
+        yPos += STEP_DISTANCE;
+      }
+      else
+      {
+        yPos -= STEP_DISTANCE;
+      }
       digitalWrite(yStepPin, HIGH);       // sets the digital pin 13 off
       delayMicroseconds(motorSpeedDelay); // waits for a milisecond
       digitalWrite(yStepPin, LOW);        // sets the digital pin 13 off
@@ -128,25 +154,37 @@ void loop()
   {
     if (deltaX >= 0)
     {
+      xSign = false;
       digitalWrite(xDirPin, clockwise);
     }
     else
     {
+      xSign = true;
       digitalWrite(xDirPin, counterClockwise);
     }
     if (deltaY >= 0)
     {
+      ySign = false;
       digitalWrite(yDirPin, clockwise);
     }
     else
     {
+      ySign = true;
       digitalWrite(yDirPin, counterClockwise);
     }
 
     if (deltaX < -256 || deltaX > 256)
     {
+      if (xSign)
+      {
+        xPos += STEP_DISTANCE;
+      }
+      else
+      {
+        xPos -= STEP_DISTANCE;
+      }
       step = true;
-      Serial.println("step x");
+      // Serial.println("step x");
       digitalWrite(xStepPin, HIGH); // sets the digital pin 13 on
       delayMicroseconds(1000);
       digitalWrite(xStepPin, LOW); // sets the digital pin 13 on
@@ -156,8 +194,16 @@ void loop()
     // Serial.println("X Stepped" + xSteps);
     if ((deltaY < -256 || deltaY > 256))
     {
+      if (ySign)
+      {
+        yPos += STEP_DISTANCE;
+      }
+      else
+      {
+        yPos -= STEP_DISTANCE;
+      }
       step = true;
-      Serial.println("step y");
+      // Serial.println("step y");
       digitalWrite(yStepPin, HIGH); // sets the digital pin 13 off
       delayMicroseconds(1000);      // waits for a milisecond
       digitalWrite(yStepPin, LOW);  // sets the digital pin 13 off
@@ -170,8 +216,13 @@ void loop()
       xValue = analogRead(VRX_PIN);
       yValue = analogRead(VRY_PIN);
     }
-    step = false;
   }
+  step = false;
+  Serial.print("(");
+  Serial.print(xPos);
+  Serial.print(", ");
+  Serial.print(yPos);
+  Serial.println(")");
 
   //  Serial.println("Y Stepped"+ ySteps);
 }
